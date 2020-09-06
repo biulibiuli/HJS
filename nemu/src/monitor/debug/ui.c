@@ -45,6 +45,17 @@ static int cmd_si(char *args) {
 	cpu_exec(N);
 	return 0;
 }
+static int cmd_info(char *args) {
+	int i;
+	if (args[0] == 'r') {
+	for (i=R_EAX;i<=R_EDI;i++)
+	{
+		printf ("%s\t0x%08x\n",regsl[i],reg_l(i));
+ 	}
+	}
+	else assert (0);
+	return 0;
+}
 
 static struct {
 	char *name;
@@ -57,7 +68,7 @@ static struct {
 
 	/* TODO: Add more commands */
     { "si", "Executing N instructions in a single step.When N is not given,the default is 1.", cmd_si},
-	//{ "info", "r:print register state	w:print watchpoint", cmd_info},
+	{ "info", "r:print register state	w:print watchpoint", cmd_info},
 	//{ "x", "Calculate the value of the expression, use the result as the starting memory address and output N consecutive 4 words in hexadecimal form.", cmd_x},
 };
 
