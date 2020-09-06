@@ -38,6 +38,14 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
+static int cmd_si(char *args) {
+	int N = 0;
+	if (args == NULL) N = 1;
+	else sscanf (args, "%d", &N);
+	cpu_exec(N);
+	return 0;
+}
+
 static struct {
 	char *name;
 	char *description;
@@ -48,7 +56,9 @@ static struct {
 	{ "q", "Exit NEMU", cmd_q },
 
 	/* TODO: Add more commands */
-
+    { "si", "Executing N instructions in a single step.When N is not given,the default is 1.", cmd_si},
+	//{ "info", "r:print register state	w:print watchpoint", cmd_info},
+	//{ "x", "Calculate the value of the expression, use the result as the starting memory address and output N consecutive 4 words in hexadecimal form.", cmd_x},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
