@@ -109,13 +109,11 @@ static bool make_token(char *e) {
 				break;
 			}
 		}
-
 		if(i == NR_REGEX) {
 			printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
 			return false;
 		}
 	}
-
 	return true; 
 }
 bool check_parentheses (int l,int r)
@@ -134,6 +132,7 @@ bool check_parentheses (int l,int r)
 	}
 	return false;
 }
+
 int dominant_operator (int l,int r)
 {
 	int i,j;
@@ -157,10 +156,7 @@ int dominant_operator (int l,int r)
 	return oper;
 }
 uint32_t eval(int l,int r) {
-	if (l > r){
-		Assert (l>r,"something happened!\n");
-		return 0;
-	}
+	if (l > r){Assert (l>r,"something happened!\n");return 0;}
 	if (l == r) {
 	uint32_t num = 0;
 	if (token[l].type == NUMBER)
@@ -195,21 +191,43 @@ uint32_t eval(int l,int r) {
 			else assert (1);
 			}
 		}
-	else if (check_parentheses (l,r) == true) 
-		return eval (l + 1,r - 1);
+/*	if (token[l].type == MARK)
+	{
+		int i;
+		for (i=0;i<nr_symtab_entry;i++)
+		{
+			if ((symtab[i].st_info&0xf) == STT_OBJECT)
+			{
+				char tmp [max_string_long];
+				int tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
+				strncpy (tmp,strtab+symtab[i].st_name,tmplen);
+				tmp [tmplen] = '\0';
+				if (strcmp (tmp,token[l].str) == 0)
+				{
+					num = symtab[i].st_value;
+				}
+			}
+		}
+	}*/
+		return num;
+	}
+	else if (check_parentheses (l,r) == true)return eval (l + 1,r - 1);
  	else {
 		int op = dominant_operator (l,r);
+//		printf ("op = %d\n",op);
  		if (l == op || token [op].type == POINTOR || token [op].type == MINUS || token [op].type == '!')
 		{
 			uint32_t val = eval (l + 1,r);
+//			printf ("val = %d\n",val);
 			switch (token[l].type)
  			{
-				case POINTOR: return swaddr_read (val,4);
+//				case POINTOR:current_sreg = R_DS;return swaddr_read (val,4);
 				case MINUS:return -val;
 				case '!':return !val;
 				default :Assert (1,"default\n");
 			} 
 		}
+
 		uint32_t val1 = eval (l,op - 1);
 		uint32_t val2 = eval (op + 1,r);
 		switch (token[op].type)
@@ -226,9 +244,8 @@ uint32_t eval(int l,int r) {
 			break;
   		}
   	}
-}
-	assert(1);
-	return -123;
+	assert (1);
+	return -123456;
 }
 uint32_t expr(char *e, bool *success) {
 	if(!make_token(e)) {
@@ -250,7 +267,6 @@ uint32_t expr(char *e, bool *success) {
   	}
 	/* TODO: Insert codes to evaluate the expression. */	
 	*success = true;
-	return eval (0,nr_token-1);
-	return 0;
+	return eval (0, nr_token-1);
 }
 
