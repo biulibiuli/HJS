@@ -71,7 +71,15 @@ static int cmd_x(char *args) {
     printf("\n");
 	return 0;
 }
-
+static int cmd_p(char *args) {
+	uint32_t num ;
+	bool suc;
+	num = expr (args,&suc);
+	if (suc)
+		printf ("0x%x:\t%d\n",num,num);
+	else assert (0);
+	return 0;
+}
 static struct {
 	char *name;
 	char *description;
@@ -85,6 +93,7 @@ static struct {
     { "si", "Executing N instructions in a single step.When N is not given,the default is 1.", cmd_si},
 	{ "info", "r:print register state	w:print watchpoint", cmd_info},
 	{ "x", "Calculate the value of the expression, use the result as the starting memory address and output N consecutive 4 words in hexadecimal form.", cmd_x},
+	{ "p", "Print expression evaluation", cmd_p},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
