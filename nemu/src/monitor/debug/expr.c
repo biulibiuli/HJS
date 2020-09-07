@@ -156,6 +156,80 @@ int dominant_operator (int l,int r)
  	}
 	return oper;
 }
+uint32_t eval(int l,int r) {
+	if (l > r){
+		Assert (l>r,"something happened!\n");
+		return 0;
+	}
+	if (l == r) {
+	uint32_t num = 0;
+	if (token[l].type == NUMBER)
+		sscanf(token[l].str,"%d",&num);
+	if (token[l].type == HNUMBER)
+		sscanf(token[l].str,"%x",&num);
+	if (token[l].type == REGISTER)
+		{
+			if (strlen (token[l].str) == 3) {
+			int i;
+			for (i = R_EAX; i <= R_EDI; i ++)
+				if (strcmp (token[l].str,regsl[i]) == 0)break;
+				if (i > R_EDI)
+				if (strcmp (token[l].str,"eip") == 0)
+					num = cpu.eip;
+				else Assert (1,"no this register!\n");
+			else num = reg_l(i);
+ 			}
+ 			else if (strlen (token[l].str) == 2) {
+ 			if (token[l].str[1] == 'x' || token[l].str[1] == 'p' || token[l].str[1] == 'i') {
+				int i;
+				for (i = R_AX; i <= R_DI; i ++)
+					if (strcmp (token[l].str,regsw[i]) == 0)break;
+				num = reg_w(i);
+			}
+ 			else if (token[l].str[1] == 'l' || token[l].str[1] == 'h') {
+				int i;
+				for (i = R_AL; i <= R_BH; i ++)
+					if (strcmp (token[l].str,regsb[i]) == 0)break;
+				num = reg_b(i);
+			}
+			else assert (1);
+			}
+		}
+	else if (check_parentheses (l,r) == true) 
+		return eval (l + 1,r - 1);
+ 	else {
+		int op = dominant_operator (l,r);
+ 		if (l == op || token [op].type == POINTOR || token [op].type == MINUS || token [op].type == '!')
+		{
+			uint32_t val = eval (l + 1,r);
+			switch (token[l].type)
+ 			{
+				case POINTOR: return swaddr_read (val,4);
+				case MINUS:return -val;
+				case '!':return !val;
+				default :Assert (1,"default\n");
+			} 
+		}
+		uint32_t val1 = eval (l,op - 1);
+		uint32_t val2 = eval (op + 1,r);
+		switch (token[op].type)
+		{
+			case '+':return val1 + val2;
+			case '-':return val1 - val2;
+			case '*':return val1 * val2;
+			case '/':return val1 / val2;
+			case EQ:return val1 == val2;
+			case NEQ:return val1 != val2;
+			case AND:return val1 && val2;
+			case OR:return val1 || val2;
+			default:
+			break;
+  		}
+  	}
+}
+	assert(1);
+	return -123;
+}
 uint32_t expr(char *e, bool *success) {
 	if(!make_token(e)) {
 		*success = false;
