@@ -83,7 +83,15 @@ static int cmd_p(char *args) {
 	else assert (0);
 	return 0;
 }
-static int cmd_w(char* args){
+static int cmd_w(char *args) {
+	WP *f;
+	bool suc;
+	f = new_wp();
+	printf ("Watchpoint %d: %s\n",f->NO,args);
+	f->val = expr (args,&suc);
+	strcpy (f->expr,args);
+	if (!suc)Assert (1,"wrong\n");
+	printf ("Value : %d\n",f->val);
 	return 0;
 }
 static int cmd_d(char *args){
