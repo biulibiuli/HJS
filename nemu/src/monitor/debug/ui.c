@@ -61,11 +61,13 @@ static int cmd_info(char *args) {
 }
 static int cmd_x(char *args) {
     int n, i;
+	bool suc;
     swaddr_t start_add;
     char *arg = strtok(args, " ");
     sscanf(arg, "%d", &n);
     args = arg + strlen(arg) + 1;
-    sscanf(args, "%x", &start_add);
+	start_add = expr(args, &suc);
+	if(!suc) assert(0);
 //    printf("0x%08x: ", start_add);
     for(i = 1; i <= n; i++){
         printf("0x%08x \n", swaddr_read ( start_add, 4));
