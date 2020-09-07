@@ -23,7 +23,7 @@ static struct rule {
 	{"\\b0[xX][0-9a-fA-F]+\\b",HNUMBER,0},		// 16 number
 	{"\\$[a-zA-Z]+",REGISTER,0},				// register
 	{"\\b[a-zA-Z_0-9]+" , MARK , 0},		// mark
-	{"!=",NEQ,3},						// not equal	
+	{"!=",NEQ,3},						// not equal
 	{"!",'!',6},						// not
 	{"\\*",'*',5},						// mul
 	{"/",'/',5},						// div
@@ -34,8 +34,8 @@ static struct rule {
 	{"==", EQ,3},						// equal
 	{"&&",AND,2},						// and
 	{"\\|\\|",OR,1},						// or
-	{"\\(",'(',7},                        // left bracket   
-	{"\\)",')',7},                        // right bracket 
+	{"\\(",'(',7},                        // left bracket
+	{"\\)",')',7},                        // right bracket
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -72,7 +72,7 @@ static bool make_token(char *e) {
 	int position = 0;
 	int i;
 	regmatch_t pmatch;
-	
+
 	nr_token = 0;
 
 	while(e[position] != '\0') {
@@ -83,7 +83,7 @@ static bool make_token(char *e) {
 				char *tmp = e + position + 1;
 				int substr_len = pmatch.rm_eo;
 
-				Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
+//				Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
 				position += substr_len;
 
 				/* TODO: Now a new token is recognized with rules[i]. Add codes
@@ -94,11 +94,11 @@ static bool make_token(char *e) {
 					case NOTYPE: break;
 					case REGISTER:
 						token[nr_token].type = rules[i].token_type;
-						token[nr_token].priority = rules[i].priority; 
+						token[nr_token].priority = rules[i].priority;
 						strncpy (token[nr_token].str,tmp,substr_len-1);
 						token [nr_token].str[substr_len-1]='\0';
 						nr_token ++;
-						break; 
+						break;
 					default:
 						token[nr_token].type = rules[i].token_type;
 						token[nr_token].priority = rules[i].priority;
@@ -114,7 +114,7 @@ static bool make_token(char *e) {
 			return false;
 		}
 	}
-	return true; 
+	return true;
 }
 bool check_parentheses (int l,int r)
 {
@@ -126,7 +126,7 @@ bool check_parentheses (int l,int r)
 		{
 			if (token[i].type == '(')lc ++;
 			if (token[i].type == ')')rc ++;
-			if (rc > lc)return false;	
+			if (rc > lc)return false;
 		}
 		if (lc == rc)return true;
 	}
@@ -145,10 +145,10 @@ int dominant_operator (int l,int r)
 		int cnt = 0;
 		bool key = true;
 		for (j = i - 1; j >= l ;j --)
-		{ 
+		{
 			if (token[j].type == '(' && !cnt){key = false;break;}
 			if (token[j].type == '(')cnt --;
-			if (token[j].type == ')')cnt ++; 
+			if (token[j].type == ')')cnt ++;
 		}
 		if (!key)continue;
 		if (token[i].priority <= min_priority){min_priority = token[i].priority;oper = i;}
@@ -225,7 +225,7 @@ uint32_t eval(int l,int r) {
 				case MINUS:return -val;
 				case '!':return !val;
 				default :Assert (1,"default\n");
-			} 
+			}
 		}
 
 		uint32_t val1 = eval (l,op - 1);
@@ -265,7 +265,7 @@ uint32_t expr(char *e, bool *success) {
 			token[i].priority = 6;
  		}
   	}
-	/* TODO: Insert codes to evaluate the expression. */	
+	/* TODO: Insert codes to evaluate the expression. */
 	*success = true;
 	return eval (0, nr_token-1);
 }
