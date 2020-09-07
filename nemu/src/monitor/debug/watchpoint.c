@@ -101,7 +101,7 @@ void info_wp()
 	f=head;
 	while (f!=NULL)
 	{
-		printf ("Watchpoint %d: %s = %d\n",f->NO,f->expr,f->val);
+		printf ("Watchpoint %d: %s = %d\n", f->NO, f->expr, f->val);
 		f = f->next;
 	}
 }
