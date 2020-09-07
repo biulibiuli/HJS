@@ -57,6 +57,18 @@ static int cmd_info(char *args) {
 	return 0;
 }
 static int cmd_x(char *args) {
+    int n, i;
+    swaddr_t start_add;
+    char *arg = strtok(args, " ");
+    sscanf(arg, "%d", &n);
+    args = arg + strlen(arg) + 1;
+    sscanf(arg, "%x", &start_add);
+    printf("0x%08x: ", start_add);
+    for(i = 1; i <= n; i++){
+        printf("0x%08x ", swaddr_read ( start_add, 4));
+        start_add += 4;
+    }
+    printf("\n");
 	return 0;
 }
 
