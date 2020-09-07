@@ -80,6 +80,15 @@ static int cmd_p(char *args) {
 	else assert (0);
 	return 0;
 }
+static int cmd_w(char* args){
+	return 0;
+}
+static int cmd_d(char *args){
+	return 0;
+}
+static int cmd_bt(char *args){
+	return 0;
+}
 static struct {
 	char *name;
 	char *description;
@@ -94,6 +103,9 @@ static struct {
 	{ "info", "r:print register state	w:print watchpoint", cmd_info},
 	{ "x", "Calculate the value of the expression, use the result as the starting memory address and output N consecutive 4 words in hexadecimal form.", cmd_x},
 	{ "p", "Print expression evaluation", cmd_p},
+	{ "w", "Stop the execution of the program if the result of the expression has changed.", cmd_w},
+	{ "d", "Delete the Nth watchpoint", cmd_d},
+	{ "bt", "Print stack frame chain", cmd_bt},
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
