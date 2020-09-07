@@ -34,3 +34,30 @@ WP* new_wp()
 		}
 	return f;
 }
+void free_wp (WP *wp)
+{
+	WP *f,*p;
+	p = free_;
+	if (p == NULL){free_ = wp;p = free_;}
+	else {
+		while (p->next!=NULL)p=p->next;
+		p->next = wp;
+	}
+	f = head;
+	if (head == NULL)assert (0);
+	if (head->NO == wp->NO)
+	{
+		head = head->next;
+	}
+	else 
+	{
+	while (f->next != NULL && f->next->NO != wp->NO)f = f->next;
+	if (f->next == NULL && f->NO == wp->NO)printf ("what ghost!");
+	else if (f->next->NO == wp->NO)f->next = f->next->next;
+	else assert (0);
+	}
+	wp->next = NULL;
+	wp->val = 0;
+	wp->b = 0;
+	wp->expr[0] = '\0';
+}
