@@ -134,7 +134,28 @@ bool check_parentheses (int l,int r)
 	}
 	return false;
 }
-
+int dominant_operator (int l,int r)
+{
+	int i,j;
+	int min_priority = 10;
+	int oper = l;
+	for (i = l; i <= r;i ++)
+	{
+		if (token[i].type == NUMBER || token[i].type == HNUMBER || token[i].type == REGISTER || token[i].type == MARK)
+			continue;
+		int cnt = 0;
+		bool key = true;
+		for (j = i - 1; j >= l ;j --)
+		{ 
+			if (token[j].type == '(' && !cnt){key = false;break;}
+			if (token[j].type == '(')cnt --;
+			if (token[j].type == ')')cnt ++; 
+		}
+		if (!key)continue;
+		if (token[i].priority <= min_priority){min_priority = token[i].priority;oper = i;}
+ 	}
+	return oper;
+}
 uint32_t expr(char *e, bool *success) {
 	if(!make_token(e)) {
 		*success = false;
