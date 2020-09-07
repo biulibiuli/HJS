@@ -94,7 +94,10 @@ static int cmd_w(char *args) {
 	printf ("Value : %d\n",f->val);
 	return 0;
 }
-static int cmd_d(char *args){
+static int cmd_d(char *args) {
+	int num;
+	sscanf (args,"%d",&num);
+	delete_wp (num);
 	return 0;
 }
 static int cmd_bt(char *args){
