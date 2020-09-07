@@ -57,20 +57,14 @@ static int cmd_info(char *args) {
 	return 0;
 }
 static int cmd_x(char *args) {
-	int n;
-	swaddr_t start;
-	int i;
-	bool suc;
-	char *cmd = strtok(args, " ");
-	sscanf (cmd, "%d", &n);
-	args = cmd + strlen(cmd) + 1;
-	start = expr (args,&suc);
-	if (!suc)assert (1);
-	printf ("0x%08x: ",start);
-	for (i=1;i<=n;i++)
+	int addr, len,  i;
+	sscanf(args, "%d 0x%x", &len, &addr);
+	printf("start addr: 0x%08x	len: %d\n", addr, len);
+	for (i=0; i<len;i++)
 	{
-		printf ("0x%08x ",swaddr_read (start,4));
-		start+=4;
+		if(!(i&0xf)) printf("\n0x%08x:", addr+i*16);
+		printf("0x%02x ", *(unsigned char*)hwa_to_va(addr + i));
+
 	}
 	printf ("\n");
 	return 0;	
