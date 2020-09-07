@@ -59,12 +59,13 @@ void init_regex() {
 	}
 }
 
-typedef struct token {
+typedef struct tok {
 	int type;
 	char str[32];
+	int priority;
 } Token;
 
-Token tokens[32];
+Token token[32];
 int nr_token;
 
 static bool make_token(char *e) {
@@ -79,6 +80,7 @@ static bool make_token(char *e) {
 		for(i = 0; i < NR_REGEX; i ++) {
 			if(regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
 				char *substr_start = e + position;
+				char *tmp = e + position + 1;
 				int substr_len = pmatch.rm_eo;
 
 				Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
@@ -88,11 +90,22 @@ static bool make_token(char *e) {
 				 * to record the token in the array `tokens'. For certain types
 				 * of tokens, some extra actions should be performed.
 				 */
-
 				switch(rules[i].token_type) {
-					default: panic("please implement me");
+					case NOTYPE: break;
+					case REGISTER:
+						token[nr_token].type = rules[i].token_type;
+						token[nr_token].priority = rules[i].priority; 
+						strncpy (token[nr_token].str,tmp,substr_len-1);
+						token [nr_token].str[substr_len-1]='\0';
+						nr_token ++;
+						break; 
+					default:
+						token[nr_token].type = rules[i].token_type;
+						token[nr_token].priority = rules[i].priority;
+						strncpy (token[nr_token].str,substr_start,substr_len);
+						token[nr_token].str[substr_len]='\0';
+						nr_token ++;
 				}
-
 				break;
 			}
 		}
