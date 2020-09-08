@@ -99,7 +99,7 @@ void info_wp()
 {
 	WP *f;
 	f=head;
-    if(f == NULL) printf("No Watchpoint!");
+    if(f == NULL) printf("No Watchpoint!\n");
 	while (f!=NULL)
 	{
 		printf ("Watchpoint %d: %s = %d\n", f->NO, f->expr, f->val);
