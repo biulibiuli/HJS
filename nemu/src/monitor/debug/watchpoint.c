@@ -49,7 +49,7 @@ void free_wp (WP *wp)
 	{
 		head = head->next;
 	}
-	else 
+	else
 	{
 	while (f->next != NULL && f->next->NO != wp->NO)f = f->next;
 	if (f->next == NULL && f->NO == wp->NO)printf ("what ghost!");
@@ -99,6 +99,7 @@ void info_wp()
 {
 	WP *f;
 	f=head;
+    if(f == NULL) printf("No Watchpoint!");
 	while (f!=NULL)
 	{
 		printf ("Watchpoint %d: %s = %d\n", f->NO, f->expr, f->val);
