@@ -54,7 +54,7 @@ static int cmd_info(char *args) {
  	}
 	}
 	else if (args[0] == 'w') {
-		info_wp();	
+		info_wp();
 	}
 	else assert (0);
 	return 0;
@@ -89,11 +89,11 @@ static int cmd_w(char *args) {
 	WP *f;
 	bool suc;
 	f = new_wp();
-	printf ("Watchpoint %d: %s\n",f->NO,args);
+	printf ("Add Watchpoint %d: %s\n",f->NO,args);
 	f->val = expr (args,&suc);
 	strcpy (f->expr,args);
 	if (!suc)Assert (1,"wrong\n");
-	printf ("Value : %d\n",f->val);
+	printf ("Value:%d\n",f->val);
 	return 0;
 }
 static int cmd_d(char *args) {
