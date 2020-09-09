@@ -7,7 +7,7 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256, EQ , NEQ , AND , OR , MINUS , POINTOR , NUMBER , HNUMBER , REGISTER , MARK
+	NOTYPE = 256, EQ , NEQ , AND , OR , MINUS , POINTOR , NUMBER , HNUMBER , REGISTER
 };
 
 static struct rule {
@@ -22,7 +22,6 @@ static struct rule {
     {"\\b[0-9]+\\b", NUMBER, 0},				// number
 	{"\\b0[xX][0-9a-fA-F]+\\b",HNUMBER,0},		// 16 number
 	{"\\$[a-zA-Z]+",REGISTER,0},				// register
-	{"\\b[a-zA-Z_0-9]+" , MARK , 0},		// mark
 	{"!=",NEQ,3},						// not equal
 	{"!",'!',6},						// not
 	{"\\*",'*',5},						// mul
@@ -140,7 +139,7 @@ int dominant_operator (int l,int r)
 	int oper = l;
 	for (i = l; i <= r;i ++)
 	{
-		if (token[i].type == NUMBER || token[i].type == HNUMBER || token[i].type == REGISTER || token[i].type == MARK)
+		if (token[i].type == NUMBER || token[i].type == HNUMBER || token[i].type == REGISTER)
 			continue;
 		int cnt = 0;
 		bool key = true;
@@ -237,11 +236,11 @@ uint32_t expr(char *e, bool *success) {
 	/* TODO: Insert codes to evaluate the expression. */
 	int i;
 	for (i = 0;i < nr_token; i ++) {
- 		if (token[i].type == '*' && (i == 0 || (token[i - 1].type != NUMBER && token[i - 1].type != HNUMBER && token[i - 1].type != REGISTER && token[i - 1].type != MARK && token[i - 1].type !=')'))) {
+ 		if (token[i].type == '*' && (i == 0 || (token[i - 1].type != NUMBER && token[i - 1].type != HNUMBER && token[i - 1].type != REGISTER && token[i - 1].type !=')'))) {
 			token[i].type = POINTOR;
 			token[i].priority = 6;
 		}
-		if (token[i].type == '-' && (i == 0 || (token[i - 1].type != NUMBER && token[i - 1].type != HNUMBER && token[i - 1].type != REGISTER && token[i - 1].type != MARK && token[i - 1].type !=')'))) {
+		if (token[i].type == '-' && (i == 0 || (token[i - 1].type != NUMBER && token[i - 1].type != HNUMBER && token[i - 1].type != REGISTER && token[i - 1].type !=')'))) {
 			token[i].type = MINUS;
 			token[i].priority = 6;
  		}
