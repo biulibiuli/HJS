@@ -191,24 +191,6 @@ uint32_t eval(int l,int r) {
 			else assert (1);
 			}
 		}
-/*	if (token[l].type == MARK)
-	{
-		int i;
-		for (i=0;i<nr_symtab_entry;i++)
-		{
-			if ((symtab[i].st_info&0xf) == STT_OBJECT)
-			{
-				char tmp [max_string_long];
-				int tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
-				strncpy (tmp,strtab+symtab[i].st_name,tmplen);
-				tmp [tmplen] = '\0';
-				if (strcmp (tmp,token[l].str) == 0)
-				{
-					num = symtab[i].st_value;
-				}
-			}
-		}
-	}*/
 		return num;
 	}
 	else if (check_parentheses (l,r) == true)return eval (l + 1,r - 1);
