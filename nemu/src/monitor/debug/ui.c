@@ -81,7 +81,7 @@ static int cmd_p(char *args) {
 	bool suc;
 	num = expr (args,&suc);
 	if (suc)
-		printf ("The value is:\n0x%x:%d\n",num,num);
+		printf ("The value is:\n0x%x:\t%d\n",num,num);
 	else assert (0);
 	return 0;
 }
