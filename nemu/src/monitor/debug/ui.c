@@ -81,7 +81,7 @@ static int cmd_p(char *args) {
 	bool suc;
 	num = expr (args,&suc);
 	if (suc)
-		printf ("0x%x:\t%d\n",num,num);
+		printf ("The value is:\n0x%x:%d\n",num,num);
 	else assert (0);
 	return 0;
 }
@@ -93,13 +93,14 @@ static int cmd_w(char *args) {
 	f->val = expr (args,&suc);
 	strcpy (f->expr,args);
 	if (!suc)Assert (1,"wrong\n");
-	printf ("Value:%d\n",f->val);
+	printf ("The Value is:%d\n",f->val);
 	return 0;
 }
 static int cmd_d(char *args) {
 	int num;
 	sscanf (args,"%d",&num);
 	delete_wp (num);
+    printf("Successfully Delete!");
 	return 0;
 }
 static int cmd_bt(char *args){

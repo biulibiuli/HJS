@@ -155,7 +155,7 @@ int dominant_operator (int l,int r)
 	return oper;
 }
 uint32_t eval(int l,int r) {
-	if (l > r){Assert (l>r,"something happened!\n");return 0;}
+	if (l > r){Assert (l>r,"Something wrong!\n");return 0;}
 	if (l == r) {
 	uint32_t num = 0;
 	if (token[l].type == NUMBER)

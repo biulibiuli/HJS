@@ -52,7 +52,7 @@ void free_wp (WP *wp)
 	else
 	{
 	while (f->next != NULL && f->next->NO != wp->NO)f = f->next;
-	if (f->next == NULL && f->NO == wp->NO)printf ("what ghost!");
+	if (f->next == NULL && f->NO == wp->NO)printf ("There is something wrong!");
 	else if (f->next->NO == wp->NO)f->next = f->next->next;
 	else assert (0);
 	}
