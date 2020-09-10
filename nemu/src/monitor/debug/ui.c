@@ -100,7 +100,7 @@ static int cmd_d(char *args) {
 	int num;
 	sscanf (args,"%d",&num);
 	delete_wp (num);
-    printf("Successfully Delete!");
+    printf("Successfully Delete %d!\n", num);
 	return 0;
 }
 static int cmd_bt(char *args){
