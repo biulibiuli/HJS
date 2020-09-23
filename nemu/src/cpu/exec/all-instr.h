@@ -5,6 +5,7 @@
 #include "data-mov/movext.h"
 #include "data-mov/cltd.h"
 #include "data-mov/leave.h"
+#include "data-mov/push.h"
 
 #include "arith/dec.h"
 #include "arith/inc.h"
@@ -14,6 +15,8 @@
 #include "arith/idiv.h"
 #include "arith/div.h"
 
+#include "con-trans/call.h"
+
 #include "logic/and.h"
 #include "logic/or.h"
 #include "logic/not.h"
@@ -22,6 +25,7 @@
 #include "logic/shl.h"
 #include "logic/shr.h"
 #include "logic/shrd.h"
+#include "logic/test.h"
 
 #include "string/rep.h"
 
