@@ -10,6 +10,9 @@ static void do_execute () {
 	dest >>= count;
 	OPERAND_W(op_dest, dest);
 
+	/* TODO: Update EFLAGS. */
+	panic("please implement me");
+
 	print_asm_template2();
 }
 
