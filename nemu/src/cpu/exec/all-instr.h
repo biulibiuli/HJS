@@ -29,6 +29,7 @@
 #include "con-trans/jle.h"
 #include "con-trans/jg.h"
 #include "con-trans/jl.h"
+#include "con-trans/jge.h"
 
 #include "logic/and.h"
 #include "logic/or.h"
