@@ -11,8 +11,6 @@ static void do_execute () {
 	OPERAND_W(op_dest, dest);
 
 	concat(updateCPU_, SUFFIX) (dest);
-
-
 	print_asm_template2();
 }
 
