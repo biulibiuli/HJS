@@ -143,8 +143,6 @@ static int cmd_bt(char *args) {
 	return 0;
 }
 
-
-
 static int cmd_c(char *args) {
 	cpu_exec(-1);
 	return 0;
