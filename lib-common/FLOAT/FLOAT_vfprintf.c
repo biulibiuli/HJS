@@ -105,14 +105,14 @@ static void modify_ppfs_setargs() {
 
 #if 0
 	enum {                          /* C type: */
-		PA_INT,                       /* int */
+		PA_INT,  1                      /* int */
 		PA_CHAR,                      /* int, cast to char */
 		PA_WCHAR,                     /* wide char */
 		PA_STRING,                    /* const char *, a '\0'-terminated string */
 		PA_WSTRING,                   /* const wchar_t *, wide character string */
 		PA_POINTER,                   /* void * */
 		PA_FLOAT,                     /* float */
-		PA_DOUBLE,                    /* double */
+		PA_DOUBLE,     7              /* double */
 		__PA_NOARG,                   /* non-glibc -- signals non-arg width or prec */
 		PA_LAST
 	};
