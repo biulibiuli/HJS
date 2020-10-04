@@ -95,6 +95,13 @@ static void modify_ppfs_setargs() {
 	 * Below is the code section in _vfprintf_internal() relative to
 	 * the modification.
 	 */
+	int addr = &_ppfs_setargs;
+	char *pos = (char *)(addr + 0x71);
+	*pos = 0xeb;
+	pos = (char *)(addr + 0x72);
+	*pos = 0x30;
+	pos = (char *)(addr + 0x73);
+	*pos = 0x90;
 
 #if 0
 	enum {                          /* C type: */
