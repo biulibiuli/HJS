@@ -35,7 +35,7 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 }
 
 static void modify_vfprintf() {
-	int addr = &_vfprintf_internal;	
+	int addr = (int)(&_vfprintf_internal);	
 	char *sub = (char *)(addr + 0x306 - 0xb);
 	*sub = 0x8;
 	sub = (char *)(addr + 0x306 - 0xa);
@@ -98,7 +98,7 @@ static void modify_vfprintf() {
 }
 
 static void modify_ppfs_setargs() {
-	int addr = &_ppfs_setargs;
+	int addr = (int)(&_ppfs_setargs);
 
 	//mprotect((void *)((addr + 0x73 - 0x64) & 0xfffff000), 4096 * 2, PROT_READ | PROT_WRITE | PROT_EXEC);
 
