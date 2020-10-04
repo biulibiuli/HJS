@@ -26,7 +26,8 @@ static void modify_vfprintf() {
 	 * is the code section in _vfprintf_internal() relative to the
 	 * hijack.
 	 */
-
+	int *p = 0x8048de8;	
+	printf("%d\n",(int)format_FLOAT - (int)(&_fpmaxtostr));
 #if 0
 	else if (ppfs->conv_num <= CONV_A) {  /* floating point */
 		ssize_t nf;
