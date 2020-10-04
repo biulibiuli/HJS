@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "FLOAT.h"
+#include <sys/mman.h>
 
 extern char _vfprintf_internal;
 extern char _fpmaxtostr;
+extern char _ppfs_setargs;
 extern int __stdio_fwrite(char *buf, int len, FILE *stream);
 
 __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
@@ -26,8 +28,28 @@ static void modify_vfprintf() {
 	 * is the code section in _vfprintf_internal() relative to the
 	 * hijack.
 	 */
-	int *p = 0x8048de8;	
-	printf("%x %x %d\n",(int)format_FLOAT,(int)(&_fpmaxtostr),(int)format_FLOAT - (int)(&_fpmaxtostr));
+	int addr = &_vfprintf_internal;
+	char *sub = (char *)(addr + 0x306 - 0xb);
+	*sub = 0x8;	
+	sub = (char *)(addr + 0x306 - 0xa);
+	*sub = 0xff;
+	sub = (char *)(addr + 0x306 - 0x9);
+	*sub = 0x32;
+	sub = (char *)(addr + 0x306 - 0x8);
+	*sub = 0x90;
+
+	sub = (char *)(addr + 0x306 - 30);
+	*sub = 0x90;
+	sub = (char *)(addr + 0x306 - 29);
+	*sub = 0x90;
+	sub = (char *)(addr + 0x306 - 33);
+	*sub = 0x90;
+	sub = (char *)(addr + 0x306 - 34);
+	*sub = 0x90; 
+
+	int *pos = (int *)(addr + 0x307);
+
+	*pos += (int)format_FLOAT - (int)(&_fpmaxtostr);
 #if 0
 	else if (ppfs->conv_num <= CONV_A) {  /* floating point */
 		ssize_t nf;
