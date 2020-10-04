@@ -27,7 +27,7 @@ static void modify_vfprintf() {
 	 * hijack.
 	 */
 	int *p = 0x8048de8;	
-	printf("%d\n",(int)format_FLOAT - (int)(&_fpmaxtostr));
+	printf("%x %x %d\n",(int)format_FLOAT,(int)(&_fpmaxtostr),(int)format_FLOAT - (int)(&_fpmaxtostr));
 #if 0
 	else if (ppfs->conv_num <= CONV_A) {  /* floating point */
 		ssize_t nf;
