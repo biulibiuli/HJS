@@ -18,19 +18,26 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 	 */
 
 	char buf[80];
-	int len = sprintf(buf, "0x%08x", f);
+	int sign = f & 0x80000000, len, cd = 0;
+	if(sign) f = (~f) + 1;
+	int hehe = 500000000, i = 15;
+	for(i = 15; i >= 0; i--) {
+		if(f & (1 << i)) cd += hehe;
+		hehe >>= 1;
+	}
+	while(cd > 999999) cd /= 10;
+	if(sign) {
+		len = (sprintf) (buf, "-%d.%06d", ((int)(f) >> 16), cd);
+	} else {
+		len = (sprintf) (buf, "%d.%06d", ((int)(f) >> 16), cd);
+	}
 	return __stdio_fwrite(buf, len, stream);
 }
 
 static void modify_vfprintf() {
-	/* TODO: Implement this function to hijack the formating of "%f"
-	 * argument during the execution of `_vfprintf_internal'. Below
-	 * is the code section in _vfprintf_internal() relative to the
-	 * hijack.
-	 */
-	int addr = &_vfprintf_internal;
+	int addr = &_vfprintf_internal;	
 	char *sub = (char *)(addr + 0x306 - 0xb);
-	*sub = 0x8;	
+	*sub = 0x8;
 	sub = (char *)(addr + 0x306 - 0xa);
 	*sub = 0xff;
 	sub = (char *)(addr + 0x306 - 0x9);
@@ -50,6 +57,7 @@ static void modify_vfprintf() {
 	int *pos = (int *)(addr + 0x307);
 
 	*pos += (int)format_FLOAT - (int)(&_fpmaxtostr);
+
 #if 0
 	else if (ppfs->conv_num <= CONV_A) {  /* floating point */
 		ssize_t nf;
@@ -90,12 +98,10 @@ static void modify_vfprintf() {
 }
 
 static void modify_ppfs_setargs() {
-	/* TODO: Implement this function to modify the action of preparing
-	 * "%f" arguments for _vfprintf_internal() in _ppfs_setargs().
-	 * Below is the code section in _vfprintf_internal() relative to
-	 * the modification.
-	 */
 	int addr = &_ppfs_setargs;
+
+	//mprotect((void *)((addr + 0x73 - 0x64) & 0xfffff000), 4096 * 2, PROT_READ | PROT_WRITE | PROT_EXEC);
+
 	char *pos = (char *)(addr + 0x71);
 	*pos = 0xeb;
 	pos = (char *)(addr + 0x72);
@@ -105,14 +111,14 @@ static void modify_ppfs_setargs() {
 
 #if 0
 	enum {                          /* C type: */
-		PA_INT,  1                      /* int */
+		PA_INT,  0                     /* int */
 		PA_CHAR,                      /* int, cast to char */
 		PA_WCHAR,                     /* wide char */
 		PA_STRING,                    /* const char *, a '\0'-terminated string */
 		PA_WSTRING,                   /* const wchar_t *, wide character string */
 		PA_POINTER,                   /* void * */
 		PA_FLOAT,                     /* float */
-		PA_DOUBLE,     7              /* double */
+		PA_DOUBLE, 7                   /* double */
 		__PA_NOARG,                   /* non-glibc -- signals non-arg width or prec */
 		PA_LAST
 	};
