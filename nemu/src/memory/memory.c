@@ -13,7 +13,7 @@ void dram_write(hwaddr_t, size_t, uint32_t);
 
 /* Memory accessing interfaces */
 void ddr3_read(hwaddr_t, void*);
-extern void ddr3_write(hwaddr_t, void*,uint8_t*);
+void ddr3_write(hwaddr_t, void*,uint8_t*);
 lnaddr_t seg_translate(swaddr_t, size_t, uint8_t);
 hwaddr_t page_translate(lnaddr_t);
 int is_mmio(hwaddr_t);
