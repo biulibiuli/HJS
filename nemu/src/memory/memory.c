@@ -4,7 +4,7 @@
 #include "cpu/reg.h"
 #include "memory/memory.h"
 #define BLOCK_SIZE 64
-#define STORAGE_SIZE_L1 64*1024
+#define STORAGE_SIZE_L1 256*1024
 #define STORAGE_SIZE_L2 4*1024*1024
 #define EIGHT_WAY 8
 #define SIXTEEN_WAY 16
@@ -71,7 +71,7 @@ uint32_t secondarycache_read(hwaddr_t addr)
 	if (!v)
 	{
 		int j;
-		time_count += 200;
+		//time_count += 200;
 		for (i = g * SIXTEEN_WAY ; i < (g + 1) * SIXTEEN_WAY ;i ++)
 		{
 			if (!cache2[i].valid)break;

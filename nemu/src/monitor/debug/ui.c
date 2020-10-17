@@ -1,7 +1,7 @@
 #include "monitor/monitor.h"
 #include "monitor/expr.h"
 #include "monitor/watchpoint.h"
-#include "memory/memory.h"
+#include "memory.h"
 #include "nemu.h"
 
 #include <stdlib.h>
