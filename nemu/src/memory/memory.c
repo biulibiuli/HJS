@@ -8,11 +8,8 @@
 #define STORAGE_SIZE_L2 4*1024*1024
 #define EIGHT_WAY 8
 #define SIXTEEN_WAY 16
-
 uint32_t dram_read(hwaddr_t, size_t);
 void dram_write(hwaddr_t, size_t, uint32_t);
-
-/* Memory accessing interfaces */
 void ddr3_read(hwaddr_t, void*);
 void ddr3_write(hwaddr_t, void*,uint8_t*);
 lnaddr_t seg_translate(swaddr_t, size_t, uint8_t);
@@ -21,6 +18,10 @@ int is_mmio(hwaddr_t);
 uint32_t mmio_read(hwaddr_t, size_t, int);
 void mmio_write(hwaddr_t, size_t, uint32_t, int);
 CPU_state cpu;
+
+/*extern uint8_t current_sreg;
+SEG_descriptor *seg_des;*/
+/* Memory accessing interfaces */
 
 struct Cache
 {
@@ -129,7 +130,6 @@ uint32_t cache_read(hwaddr_t addr)
 	}
 	return i;
 }
-
 void secondarycache_write(hwaddr_t addr, size_t len,uint32_t data) {
 	uint32_t g = (addr >> 6) & ((1<<12) - 1);  //group number
 	uint32_t offset = addr & (BLOCK_SIZE - 1); // inside addr
@@ -166,15 +166,48 @@ void cache_write(hwaddr_t addr, size_t len,uint32_t data) {
 	}
 	secondarycache_write(addr,len,data);
 }
+/*uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
+	return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
+}*/
 
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
-	return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
+	int index = is_mmio(addr);
+	if ( index >= 0)
+	{
+		return mmio_read(addr, len, index);
+	}
+	uint32_t offset = addr & (BLOCK_SIZE - 1); // inside addr
+	uint32_t block = cache_read(addr);
+	uint8_t temp[4];
+	memset (temp,0,sizeof (temp));
+
+	if (offset + len >= BLOCK_SIZE) 
+	{
+		uint32_t _block = cache_read(addr + len);
+		memcpy(temp,cache[block].data + offset, BLOCK_SIZE - offset);
+		memcpy(temp + BLOCK_SIZE - offset,cache[_block].data, len - (BLOCK_SIZE - offset));
+	}
+	else
+	{
+		memcpy(temp,cache[block].data + offset,len);
+	}
+	int zero = 0;
+	uint32_t tmp = unalign_rw(temp + zero, 4) & (~0u >> ((4 - len) << 3)); 
+	return tmp;
 }
 
-void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
+/*void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 	dram_write(addr, len, data);
+}*/
+void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
+	int index = is_mmio(addr);
+	if ( index >= 0)
+	{
+		mmio_write(addr, len, data, index);
+		return ;
+	}
+	cache_write(addr, len, data);
 }
-
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
 	return hwaddr_read(addr, len);
 }
@@ -196,4 +229,3 @@ void swaddr_write(swaddr_t addr, size_t len, uint32_t data) {
 #endif
 	lnaddr_write(addr, len, data);
 }
-
