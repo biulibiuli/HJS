@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include "burst.h"
 #include "cpu/reg.h"
+#include "memory/memory.h"
 #define BLOCK_SIZE 64
-#define STORAGE_SIZE_L1 256*1024
+#define STORAGE_SIZE_L1 64*1024
 #define STORAGE_SIZE_L2 4*1024*1024
 #define EIGHT_WAY 8
 #define SIXTEEN_WAY 16
@@ -20,7 +21,6 @@ int is_mmio(hwaddr_t);
 uint32_t mmio_read(hwaddr_t, size_t, int);
 void mmio_write(hwaddr_t, size_t, uint32_t, int);
 CPU_state cpu;
-uint64_t time_count;
 
 struct Cache
 {
@@ -64,12 +64,14 @@ uint32_t secondarycache_read(hwaddr_t addr)
 		if (cache2[i].tag == (addr >> 18)&& cache2[i].valid)
 			{
 				v = true;
+				time_count += 20;
 				break;
 			}
 	}
 	if (!v)
 	{
 		int j;
+		time_count += 200;
 		for (i = g * SIXTEEN_WAY ; i < (g + 1) * SIXTEEN_WAY ;i ++)
 		{
 			if (!cache2[i].valid)break;
@@ -105,6 +107,7 @@ uint32_t cache_read(hwaddr_t addr)
 		if (cache[i].tag == (addr >> 13)&& cache[i].valid)
 			{
 				v = true;
+				time_count += 2;
 				break;
 			}
 	}

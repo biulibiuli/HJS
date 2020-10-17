@@ -7,8 +7,6 @@
 
 extern uint8_t *hw_mem;
 
-extern void ddr3_read(hwaddr_t, void*);
-extern void ddr3_write(hwaddr_t, void*,uint8_t*);
 /* convert the hardware address in the test program to virtual address in NEMU */
 #define hwa_to_va(p) ((void *)(hw_mem + (unsigned)p))
 /* convert the virtual address in NEMU to hardware address in the test program */
@@ -19,6 +17,7 @@ extern void ddr3_write(hwaddr_t, void*,uint8_t*);
 	hwa_to_va(addr); \
 })
 
+uint64_t time_count;
 uint32_t swaddr_read(swaddr_t, size_t);
 uint32_t lnaddr_read(lnaddr_t, size_t);
 uint32_t hwaddr_read(hwaddr_t, size_t);
