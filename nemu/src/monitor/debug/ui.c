@@ -1,7 +1,6 @@
 #include "monitor/monitor.h"
 #include "monitor/expr.h"
 #include "monitor/watchpoint.h"
-#include "memory.h"
 #include "nemu.h"
 
 #include <stdlib.h>
@@ -147,10 +146,6 @@ static int cmd_bt(char *args) {
 	return 0;
 }
 
-static int cmd_pt(char *args) {
-	printf("%ld\n",time_count);
-	return 0;
-}
 
 static int cmd_c(char *args) {
 	cpu_exec(-1);
@@ -179,8 +174,7 @@ static struct {
         { "p", "Evaluate the value of expression", cmd_p },
 	{ "w", "Set watchpoint", cmd_w },
 	{ "d", "Delete watchpoint", cmd_d },
-	{ "bt", "Display backtrace", cmd_bt },
-	{"pt", "Print time_count", cmd_pt}
+	{ "bt", "Display backtrace", cmd_bt }
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
