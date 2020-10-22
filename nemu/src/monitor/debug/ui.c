@@ -175,6 +175,7 @@ static struct {
 	{ "w", "Set watchpoint", cmd_w },
 	{ "d", "Delete watchpoint", cmd_d },
 	{ "bt", "Display backtrace", cmd_bt }
+
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
