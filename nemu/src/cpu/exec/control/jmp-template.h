@@ -15,6 +15,7 @@ make_helper(jmp_rm_l) {
 	print_asm(str(instr) " *%s", op_src->str);
 	return len + 1;
 }
+
 make_helper(ljmp) {
 	uint32_t op1 = instr_fetch(eip + 1, 4) - 7;
 	uint16_t op2 = instr_fetch(eip + 5, 2);

@@ -78,7 +78,9 @@ static void load_entry() {
 
 static void init_CR0() {
 	cpu.cr0.protect_enable = 0;
-	cpu.cr0.paging = 0;
+	//cpu.cr0.paging = 0;
+	cpu.cr0.val = 0;
+    cpu.cr3.val = 0;
 }
 
 void restart() {
@@ -95,7 +97,7 @@ void restart() {
 	cpu.eip = ENTRY_START;
 	cpu.eflags.CF = 1;
 	cpu.eflags.PF = cpu.eflags.ZF = cpu.eflags.SF = cpu.eflags.IF = cpu.eflags.DF = cpu.eflags.OF = 0;
-    cpu.eflags.val = 0x2;
+        cpu.eflags.val = 0x2;
 
 	/* Initialize DRAM. */
 	init_ddr3();
