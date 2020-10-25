@@ -2,6 +2,7 @@
 #include "monitor/expr.h"
 #include "monitor/watchpoint.h"
 #include "nemu.h"
+#include "memory/memory.h"
 
 #include <stdlib.h>
 #include <readline/readline.h>
@@ -151,7 +152,7 @@ static int cmd_page(char *args){
 	lnaddr_t lnaddr;
 	sscanf(args, "%x", &lnaddr);
 	hwaddr_t hwaddr = page_translate(lnaddr, 1);
-	if(!(cpu.cr0.protect_enable && cpu.cr0.paging)) {
+	if(!(cpu.cr0.protect_enable || cpu.cr0.paging)) {
 		printf("Page Addr Transform Fail!\n");
 	}
 	else printf("Page-trans Result: 0x%x -> 0x%x\n", lnaddr, hwaddr);
@@ -186,7 +187,7 @@ static struct {
 	{ "w", "Set watchpoint", cmd_w },
 	{ "d", "Delete watchpoint", cmd_d },
 	{ "bt", "Display backtrace", cmd_bt },
-	{ "page", "Print page addr convert result", cmd_page}
+	{ "page", "Print page addr transform result", cmd_page}
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
