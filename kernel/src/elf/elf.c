@@ -52,6 +52,7 @@ uint32_t loader() {
 			/* TODO: read the content of the segment from the ELF file 
 			 * to the memory region [VirtAddr, VirtAddr + FileSiz)
 			 */
+			//set_bp();
 			ramdisk_read((void *)ph->p_vaddr, ph->p_offset, ph->p_filesz);
 			 
 			/* TODO: zero the memory region 
@@ -81,10 +82,10 @@ uint32_t loader() {
 	write_cr3(get_ucr3());
 #endif
 
-	//test
-	video_mapping_write_test();
+	/*test vmem*/
 	void video_mapping_write_test();
 	void video_mapping_read_test();
 	void video_mapping_clear();
+	/*all the vmem function should be tested at the same time*/
 	return entry;
 }
