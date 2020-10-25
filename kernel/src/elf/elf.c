@@ -3,6 +3,8 @@
 #include <string.h>
 #include <elf.h>
 
+void video_mapping_write_test();
+
 #define ELF_OFFSET_IN_DISK 0
 
 #ifdef HAS_DEVICE
@@ -43,6 +45,7 @@ uint32_t loader() {
 	for(; i < elf->e_phnum; i++, ph++) {
 		/* Scan the program header table, load each segment into memory */
 		if(ph->p_type == PT_LOAD) {
+			
                         ph->p_vaddr = mm_malloc(ph->p_vaddr, ph->p_memsz);
 			/* TODO: read the content of the segment from the ELF file 
 			 * to the memory region [VirtAddr, VirtAddr + FileSiz)
@@ -76,5 +79,7 @@ uint32_t loader() {
 	write_cr3(get_ucr3());
 #endif
 
+	//test
+	video_mapping_write_test();
 	return entry;
 }
