@@ -68,7 +68,6 @@ void swaddr_write(swaddr_t addr, size_t len, uint32_t data, uint8_t sreg) {
 /* seg function*/
 lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg) {
 	if (cpu.cr0.protect_enable == 1) {
-		printf("Changed!\n");
 		Assert(addr+len < cpu.sr[sreg].cache_limit, "Segment Fault!");
 		return cpu.sr[sreg].cache_base + addr;
 	}
@@ -76,7 +75,6 @@ lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg) {
 }
 
 void sreg_load(uint8_t sreg) {
-	printf("Used!\n");
 	uint32_t gd = cpu.gdtr.base_addr;
 	gd += cpu.sr[sreg].index << 3;
 	SegDescriptor sd;
