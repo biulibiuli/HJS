@@ -33,7 +33,6 @@ make_helper(concat(mov_moffs2a_, SUFFIX)) {
 /* Change CR0 and CR3 */
 make_helper(mov_cr2r) {
 	uint8_t opcode = instr_fetch(eip + 1, 1);
-	//
 	if(opcode == 0xc0) {
 		cpu.eax = cpu.cr0.val;
 		print_asm("mov %%%s,%%cr0", REG_NAME(R_EAX));
@@ -41,7 +40,7 @@ make_helper(mov_cr2r) {
 		cpu.eax = cpu.cr3.val;
 		print_asm("mov %%%s,%%cr3", REG_NAME(R_EAX));
 	}
-	return 5; //yinggaiwusuoweiba
+	return 2;
 }
 make_helper(mov_r2cr) {
 	uint8_t opcode = instr_fetch(eip + 1, 1);
@@ -50,10 +49,9 @@ make_helper(mov_r2cr) {
 		print_asm("mov %%%s,%%cr0", REG_NAME(R_EAX));
 	} else if(opcode == 0xd8) {
 		cpu.cr3.val = cpu.eax;
-		//resetTLB();
 		print_asm("mov %%%s,%%cr3", REG_NAME(R_EAX));
 	}
-	return 5; //yinggaiwusuoweiba
+	return 2;
 }
 #endif
 
@@ -73,7 +71,7 @@ make_helper(mov_seg) {
 		sreg_load(R_SS);
 		print_asm("mov %%%s,ss",REG_NAME(R_EAX));
 	}
-	return 2; //2
+	return 2; 
 }
 #endif 
 
