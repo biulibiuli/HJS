@@ -13,6 +13,7 @@ make_instr_helper(r)
 make_instr_helper(rm)
 #endif
 
+make_instr_helper(i)
 #if DATA_BYTE == 1
 make_instr_helper(si)
 #endif
