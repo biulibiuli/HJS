@@ -1,7 +1,6 @@
 #ifndef __SBB_H__
 #define __SBB_H__
 
-
 make_helper(sbb_i2rm_v);
 make_helper(sbb_i2a_v);
 make_helper(sbb_si2rm_v);

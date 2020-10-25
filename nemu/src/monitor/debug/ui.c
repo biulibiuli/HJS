@@ -189,7 +189,7 @@ static struct {
 	{ "w", "Set watchpoint", cmd_w },
 	{ "d", "Delete watchpoint", cmd_d },
 	{ "bt", "Display backtrace", cmd_bt },
-	{ "page", "Print page addr transform result", cmd_page}
+	{ "page", "Print page addr translation result", cmd_page}
 
 };
 
