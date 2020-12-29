@@ -46,12 +46,12 @@ void init_monitor(int argc, char *argv[]) {
 	make_all_cache();
         make_all_tlb();
 
-    /* Initialize Devices and SDL*/
+	/* Initialize Devices and SDL*/
 	#ifdef HAS_DEVICE
 		init_device();
 		init_sdl();
 	#endif
-	
+
 	/* Display welcome message. */
 	welcome();
 }
