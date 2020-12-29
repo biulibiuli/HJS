@@ -26,7 +26,7 @@ hwaddr_t page_walk(lnaddr_t lnaddr) {
 		Log("Error1!");
 		void do_int3();
 		do_int3();
-		assert(0);
+		//assert(0);
 	}
 
 	hwaddr_t pt_base = pde.val & ~PAGE_MASK;
