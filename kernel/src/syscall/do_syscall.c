@@ -18,7 +18,7 @@ static void sys_write(TrapFrame *tf) {
 	if(tf->ebx == 1 || tf->ebx == 2) { //check fd
 	#ifdef HAS_DEVICE
 		void serial_printc(char ch);
-		int i;
+		int i = 0;
 		for(i = 0; i < tf->edx; i++) serial_printc(*((char *)((char *)tf->ecx + i)));
 	#else
 		asm volatile(".byte 0xd6" : : "a"(2), "c"(tf->ecx), "d"(tf->edx));
@@ -47,7 +47,9 @@ void do_syscall(TrapFrame *tf) {
 		case SYS_ioctl: sys_ioctl(tf); break;
 
 		/* TODO: Add more system calls. */
-        case SYS_write: sys_write(tf); break;
+
+		case SYS_write: sys_write(tf); break;
+
 		default: panic("Unhandled system call: id = %d, eip = 0x%08x", tf->eax, tf->eip);
 	}
 }
